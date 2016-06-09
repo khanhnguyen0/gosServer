@@ -1,0 +1,23 @@
+{
+  "name": "gos_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://midofit@github.com/midofit/gosServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/midofit/gosServer/issues"
+  },
+  "homepage": "https://github.com/midofit/gosServer#readme",
+  "dependencies": {
+    "cors": "^2.7.1",
+    "express": "^4.13.4"
+  }
+}
