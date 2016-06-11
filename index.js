@@ -6,6 +6,7 @@ var User = require('./model/user.js');
 var mongoose = require('mongoose');
 var credentials = require('./credentials.js');
 var bodyparser = require('body-parser');
+var PORT = process.env.PORT || 5000;
 var opts = {
 	server:{
 		socketOptions: { keepAlive: 1 }
@@ -63,6 +64,6 @@ app.post('/api/messages',function(req,res){
 	})
 });
 
-app.listen(3000,function(){
-	console.log('Running on port 3000');	
+app.listen(PORT,function(){
+	console.log('Running on port', PORT);	
 });
