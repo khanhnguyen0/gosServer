@@ -17,30 +17,60 @@ var opts = {
 mongoose.connect(credentials.mongo.development.connectionString,opts);
 app.use(bodyparser());
 app.use('/api',cors());
-app.get('/api/hello',function(req,res){
-	console.log("request received");
-	res.status(200).send("Hello world");
+
+app.get('/api/user/:user',function(req,res){
+	User.findOne({userName:req.params.user},function(err,user){
+		if (err) return res.send(500,'database error');
+		if (user) {
+			res.send(false);
+		}
+		else 
+			res.send(true);
+	});
 });
+
 
 app.get('/api/current_user',function(req,res){
 	User.find({online:true}, function(err,users){
 		if (err) return res.send(500,'database error');
 		res.json(users.map(function(u){
-			return
-			{
-				user: u.userName
-			}
+			return u.userName
 		}));
 	});
 });
 
+
+app.post('/api/new_user',function(req,res){
+	console.log(req.body);
+	var u = new User({
+		userName:req.body.userName,
+		password:req.body.password,
+		online:true
+	});
+	u.save(function(err,m){
+		if (err) return res.send(500,'Database Error');
+		res.json({id: u._id});
+	});
+});
+
+app.post('/api/user',function(req,res){
+	User.findOne({userName:req.body.userName,password:req.body.password},function(err,user){
+		if (err) return res.send(500,'Database error');
+		if (user){
+			user.set({online:true});
+			res.json({isSuccess:true});
+		}
+		else{
+			res.json({isSuccess:false});
+		}
+	});
+});
+
 app.get('/api/messages',function(req,res){ 
-	console.log('get');
 	Message.find({}, function(err,messages){
 		console.log(messages);
 		if (err) return res.send(500,'database error');
 		res.json(messages.map(function(m){
-			console.log(m);
 			return {
 				user: m.user,
 				time: m.time,
@@ -49,6 +79,7 @@ app.get('/api/messages',function(req,res){
 		}));
 	});
 });
+
 
 app.post('/api/messages',function(req,res){
 	console.log(req.body);
